@@ -11,8 +11,29 @@ exports.addStore = (req, res) => {
 };
 
 exports.createStore = async (req, res) => {
-  const store = new Store(req.body);
-  await store.save();
+  const store = await (new Store(req.body)).save();
   console.log('Saved!');
-  res.redirect('/');
+  req.flash('success', `Successfully created ${store.name}. Care to leave a review?`)
+  res.redirect(`/store/${store.slug}`);
+};
+
+exports.getStores = async (req, res) => {
+  // 1. querry db
+  const stores = await Store.find();
+  res.render('stores', {
+    title: 'Stores',
+    stores,
+  });
+};
+
+exports.editStore = async (req, res) => {
+  // 1. find
+  const store = await Store.findOne({ _id: req.params.id });
+
+  // 2 confir youare the owner
+  // 3 render edit form
+  res.render('editStore', {
+    title: `Edit ${store.name}`,
+    store,
+  });
 };
