@@ -7,7 +7,11 @@
   middleware with next()
 */
 
-exports.catchErrors = fn => (req, res, next) => fn(req, res, next).catch(next);
+exports.catchErrors = (fn) => {
+  return function (req, res, next) {
+    fn(req, res, next).catch(next);
+  }
+};
 
 /*
   Not Found Error Handler
@@ -28,6 +32,7 @@ exports.notFound = (req, res, next) => {
 */
 
 exports.flashValidationErrors = (err, req, res, next) => {
+  // if there no error to show flashes -> skip it
   if (!err.errors) return next(err);
   // validation errors look like
   const errorKeys = Object.keys(err.errors);
