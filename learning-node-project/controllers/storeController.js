@@ -102,7 +102,8 @@ exports.getStoreBySlug = async (req, res, next) => {
     slug: req.params.slug,
   });
   if (!store) {
-    return next();
+    next();
+    return;
   }
   res.render('store', {
     store,
