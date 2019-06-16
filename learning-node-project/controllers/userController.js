@@ -17,7 +17,7 @@ exports.validateRegister = (req, res, next) => {
   req.checkBody('name', 'You must supply a name!').notEmpty();
   req.checkBody('email', 'That EMail is not valid').isEmail();
   req.sanitizeBody('email').normalizeEmail({
-    remove_dots: false,
+    gmail_remove_dots: false,
     remove_extensions: false,
     gmail_remove_subaddres: false,
   });
@@ -73,6 +73,6 @@ exports.updateAccount = async (req, res) => {
       context: 'query',
     },
   );
-  req.flash('success', 'Your profile was successfully updated')
+  req.flash('success', 'Your profile was successfully updated');
   res.redirect('back');
 };
